@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+  moduleFormar = "cjs"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId        Int         @id @default(autoincrement()) @map("user_id")
+  avatar        String?     @db.VarChar(255)
+  name          String?     @db.VarChar(50)
+  email         String      @unique @db.VarChar(255)
+  telephone     String?     @db.VarChar(20)
+  passwordHash  String      @db.VarChar(255) @map("password_hash")
+  role          UserRole    @default(MEMBER)
+  status        UserStatus  @default(ACTIVE)
+  createdAt     DateTime    @default(now()) @db.Timestamp(6) @map("created_at")
+  updatedAt     DateTime    @updatedAt @db.Timestamp(6) @map("updated_at")
+
+  accounts      Account[]
+  userSessions  UserSession[]
+
+  @@map("users")
+}
+
+model Account {
+  accountId             Int            @id @default(autoincrement()) @map("account_id")
+  userId                Int            @map("user_id")
+  accountNumber         String         @unique @db.VarChar(255) @map("account_number")
+  accountType           AccountType    @default(SAVING) @map("account_type")
+  pinHash               String?        @db.VarChar(255) @map("pin_hash")
+  balance               Decimal        @db.Decimal(18, 2) @default(0)
+  currency              Currency       
+  status                AccountStatus  @default(ACTIVE)
+  createdAt             DateTime       @default(now()) @db.Timestamp(6) @map("created_at")
+  updatedAt             DateTime       @updatedAt @db.Timestamp(6) @map("updated_at")
+
+  user                  User           @relation(fields: [userId], references: [userId])
+  outgoingTransactions  Transaction[]  @relation("SourceAccount")
+  incomingTransactions  Transaction[]  @relation("TargetAccount")
+
+  @@map("accounts")
+}
+
+model Transaction {
+  transactionId     Int               @id @default(autoincrement()) @map("transaction_id")
+  accountId         Int               @map("account_id")
+  targetAccountId   Int?              @map("target_account_id")
+  amount            Decimal           @db.Decimal(18, 2)
+  transactionType   TransactionType   @map("transaction_type")
+  status            TransactionStatus @default(PENDING)
+  balance_before    Decimal           @db.Decimal(18, 2)
+  balance_after     Decimal           @db.Decimal(18, 2)
+  description       String            @db.VarChar(255)
+  createdAt         DateTime          @default(now()) @db.Timestamp(6) @map("created_at")
+  updatedAt         DateTime          @updatedAt @db.Timestamp(6) @map("updated_at")
+
+  account           Account           @relation("SourceAccount", fields: [accountId], references: [accountId])
+  targetAccount     Account?          @relation("TargetAccount", fields: [targetAccountId], references: [accountId])
+
+  @@map("transactions")
+}
+
+model UserSession {
+  sessionId        Int      @id @default(autoincrement()) @map("session_id")
+  userId           Int      @map("user_id")
+  refreshTokenHash String   @map("refresh_token_hash")
+  userAgent        String?  @map("user_agent")
+  ipAddress        String?  @map("ip_address")
+  expiresAt        DateTime @map("expires_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  user             User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+enum UserRole {
+  MEMBER
+  ADMIN
+  SUPERADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+  PENDING
+}
+
+enum AccountStatus {
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELED
+}
+
+enum AccountType {
+  SAVING
+  DEPOSIT
+  BUSINESS
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+}
+
+enum Currency {
+  IDR
+  USD
+}

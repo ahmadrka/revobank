@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "accounts" ALTER COLUMN "account_type" SET DEFAULT 'SAVING',
+ALTER COLUMN "status" SET DEFAULT 'ACTIVE';
