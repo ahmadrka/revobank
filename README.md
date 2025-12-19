@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+# [See Project Docs On Postman](https://documenter.getpostman.com/view/50216756/2sB3dWqS2f)
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
@@ -100,5 +100,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 # Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/0UWyaad3)
-
-> > > > > > > 5c9fa589e03d516af039961e7f33fb99a0862cee
