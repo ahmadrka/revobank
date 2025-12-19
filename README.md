@@ -1,6 +1,108 @@
-# [See Project Docs On Postman](https://documenter.getpostman.com/view/50216756/2sB3dWqS2f)
+# RevoBank, a Fictional Backend Banking Management App
 
-<p align="center">
+Wellcome to RevoBank, a fictional backend banking management app built by [Ahmadrka](https://ahmadrka.com). Built with Nest.js framework, PostgreSQL, and Prisma.
+See Project Docs On [Postman](https://documenter.getpostman.com/view/50216756/2sB3dWqS2f)
+
+## Technology
+
+### Built with
+
+- [Node.js](https://nodejs.org/)
+- [ts-node](https://www.npmjs.com/package/ts-node)
+- [Nest.js](http://nestjs.com/)
+
+### Databases
+
+- [PostgreSQL](https://www.postgresql.org/)
+- [Prisma](https://www.prisma.io/)
+
+### Dependencies
+
+- [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Passport.js](https://www.passportjs.org/)
+
+## Routes
+
+- Auth
+  - `POST` User Signup
+  - `POST` User Login
+  - `POST` Refresh Token
+- User
+  - `GET` Retrieve User
+  - `PATCH` Update User
+  - `PATCH` Remove User
+- Account
+  - `POST` Create Account
+  - `GET` List Accounts
+  - `GET` Get Account
+  - `PATCH` Update Account
+  - `PATCH` Close Account
+- Transaction
+  - `GET` List Transactions
+  - `GET` Get Transaction
+  - `POST` Deposit
+  - `POST` Withdraw
+  - `POST` Transfer
+
+## Features
+
+...
+
+## Deployment
+
+### Deployment Demo
+
+**You can see live demo in here**
+**👉 [https://api.revobank.ahmadrka.com](https://api.revobank.ahmadrka.com) 👈**
+Hosted on [Railway](https://railway.com)
+Database on [Neon](https://neon.com/)
+
+### Deployment Setup
+
+1. Make sure you have installed [**Node.js**](https://nodejs.org/) (v18+ recommended).
+2. Clone or download [this repository](https://github.com/Revou-FSSE-Jun25/milestone-4-Ahmad-Arkan).
+
+   ```bash
+   git clone https://github.com/Revou-FSSE-Jun25/milestone-4-Ahmad-Arkan.git
+   cd milestone-4-Ahmad-Arkan
+   ```
+
+3. Download all dependencies modules.
+
+   ```bash
+   npm install
+   ```
+
+4. Copy environment example file for reference
+
+   ```bash
+   cp .env.example .env
+   ```
+
+5. Database setup
+
+   ```bash
+   npx prisma migrate dev
+   npx prisma generate
+   ```
+
+6. Now, you can run the server,
+
+   ```bash
+   npm run start:dev
+   ```
+
+   then, server will running on [http://localhost:3000](http://localhost:3000)
+
+7. Or, you can also run server with production mode.
+
+   ```bash
+   npm run start:prod
+   ```
+
+   Congrats, now you running this backend app.
+
+<!-- <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
@@ -23,7 +125,7 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+<!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
@@ -99,4 +201,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 # Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/0UWyaad3)
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/0UWyaad3) --> -->
