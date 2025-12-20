@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma/prisma.service';
 import { TransactionsModule } from './transactions/transactions.module';
 import { RateLimiterMiddleware } from './middleware/rate-limiter.middleware';
+import helmet from 'helmet';
 
 @Module({
   imports: [
