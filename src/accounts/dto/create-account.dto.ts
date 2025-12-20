@@ -1,17 +1,20 @@
 import { IsEnum, IsString, Length, Matches } from 'class-validator';
 
-enum AccountType {
+export enum AccountType {
   SAVING = 'SAVING',
   DEPOSIT = 'DEPOSIT',
   BUSINESS = 'BUSINESS',
 }
 
-enum Currency {
+export enum Currency {
   USD = 'USD',
   IDR = 'IDR',
 }
 
 export class CreateAccountDto {
+  @IsString()
+  name: string;
+
   @IsEnum(AccountType)
   type: AccountType;
 

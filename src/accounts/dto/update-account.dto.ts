@@ -1,4 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateAccountDto } from './create-account.dto';
+import { CreateAccountDto, Currency, AccountType } from './create-account.dto';
 
-export class UpdateAccountDto extends PartialType(CreateAccountDto) {}
+export class UpdateAccountDto extends PartialType(CreateAccountDto) {
+  currentPin: string;
+  newPin: string;
+  accountType: AccountType;
+  currency: Currency;
+}

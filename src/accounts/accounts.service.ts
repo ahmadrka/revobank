@@ -29,20 +29,22 @@ export class AccountsService {
   }
 
   async findAccountDetail(accountNumber: string, userId: number, pin: string) {
-    const account = await this.repo.findByAccountNumber(accountNumber, userId);
+    const accountData = await this.repo.findByAccountNumber(
+      accountNumber,
+      userId,
+    );
 
-    if (!account?.pinHash) {
+    if (!accountData?.pinHash) {
       throw new NotFoundException('Account not found');
     }
 
-    console.log(pin, account.pinHash);
-    const isMatch = await bcrypt.compare(pin, account.pinHash);
+    const isMatch = await bcrypt.compare(pin, accountData.pinHash);
 
     if (!isMatch) {
       throw new ForbiddenException('Pin not valid');
     }
 
-    return this.repo.findAccountDetail(accountNumber, userId);
+    return await this.repo.findAccountDetail(accountNumber, userId);
   }
 
   updateAccount(number: number, updateAccountDto: UpdateAccountDto) {
@@ -50,7 +52,7 @@ export class AccountsService {
   }
 
   removeAccount(number: number, pin: number) {
-    return `This action removes a #${number} account`;
+    return `This action removes a #${number}${pin} account`;
   }
 
   deleteAccount(number: number, pin: number) {}

@@ -15,10 +15,10 @@ export class AuthService {
 
   async login(dto: LoginAuthDto, meta: { ip?: string; ua?: string }) {
     const user = await this.UsersService.findByEmail(dto.email);
-    if (!user) return new UnauthorizedException('Email not found');
+    if (!user) throw new UnauthorizedException('Email not found');
 
     const isMatch = await bcrypt.compare(dto.password, user.passwordHash);
-    if (!isMatch) return new UnauthorizedException('Invalid password');
+    if (!isMatch) throw new UnauthorizedException('Invalid password');
 
     const payload = { sub: user.userId, email: user.email, role: user.role };
 
@@ -66,11 +66,11 @@ export class AuthService {
       ).then((res) => res.find((r) => r.match));
 
       if (!matchedSession) {
-        return new UnauthorizedException('Refresh token revoked');
+        throw new UnauthorizedException('Refresh token revoked');
       }
 
       if (matchedSession.session.expiresAt < new Date()) {
-        return new UnauthorizedException('Session expired');
+        throw new UnauthorizedException('Session expired');
       }
 
       // ROTATE

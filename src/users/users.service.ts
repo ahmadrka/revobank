@@ -7,10 +7,15 @@ import {
 import { UserRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AccountRepository } from 'src/accounts/accounts.repository';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly repo: UserRepository) {}
+  constructor(
+    private readonly repo: UserRepository,
+    private readonly account: AccountRepository,
+  ) {}
 
   async findByEmail(email: string) {
     return await this.repo.findByEmail(email);
@@ -36,15 +41,30 @@ export class UsersService {
     const existingUser = await this.repo.findByEmail(dto.email);
     if (existingUser) throw new ConflictException('Email already exists');
 
-    return { message: 'Signup successful, please login' };
+    return this.repo.createUser(dto);
   }
 
-  updateUser(dto: UpdateUserDto) {
-    return this.repo.updateUser(dto);
+  updateUser(id: number, dto: UpdateUserDto) {
+    return this.repo.updateUser(id, dto);
   }
 
-  removeUser(dto) {
-    return;
+  async removeUser(id: number, password: string) {
+    const user = await this.repo.findById(id);
+    const hasActiveAccount = await this.account.hasActiveAccount(id);
+
+    if (!user || user.status === 'INACTIVE')
+      throw new NotFoundException('User already removed');
+
+    const matches = await bcrypt.compare(password, user.passwordHash);
+
+    if (!matches) throw new ForbiddenException('Invalid password');
+
+    if (hasActiveAccount)
+      throw new ForbiddenException(
+        'Please close or transfer ownership of this user account before deleting this user',
+      );
+
+    return this.repo.removeUser(id);
   }
 
   deleteUser(id: number) {

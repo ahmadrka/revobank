@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -21,29 +20,33 @@ import { OwnershipGuard } from 'src/auth/ownership.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(RolesGuard)
+  // ONLY FOR TESTING
+  // @UseGuards(RolesGuard)
   @Roles(Role.ADMIN, Role.SUPERADMIN)
-  @Get()
+  @Get('getall')
   findAll() {
     return this.usersService.getUsers();
   }
 
-  @UseGuards(OwnershipGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.getUser(+id);
+  @Get()
+  findOne(@Req() user: { user: { userId: number } }) {
+    return this.usersService.getUser(+user.user.userId);
   }
 
-  @UseGuards(OwnershipGuard)
-  @Patch(':id')
-  update(@Param('id') @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(updateUserDto);
+  @Patch()
+  update(
+    @Req() user: { user: { userId: number } },
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(+user.user.userId, updateUserDto);
   }
 
-  @UseGuards(OwnershipGuard)
-  @Post(':id')
-  remove(@Param('id') @Body('password') removeUser) {
-    return this.usersService.removeUser(removeUser);
+  @Patch('close')
+  remove(
+    @Req() user: { user: { userId: number } },
+    @Body('password') password: string,
+  ) {
+    return this.usersService.removeUser(+user.user.userId, password);
   }
 
   @UseGuards(RolesGuard)

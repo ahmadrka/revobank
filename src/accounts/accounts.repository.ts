@@ -23,6 +23,7 @@ export class AccountRepository {
 
     return this.prisma.account.create({
       data: {
+        accountName: dto.name,
         accountNumber,
         userId,
         pinHash,
@@ -31,8 +32,10 @@ export class AccountRepository {
         accountType: dto.type,
       },
       select: {
+        accountName: true,
         accountNumber: true,
-        balance: true,
+        accountType: true,
+        status: true,
         createdAt: true,
       },
     });
@@ -42,10 +45,11 @@ export class AccountRepository {
     return await this.prisma.account.findMany({
       where: { userId: userId },
       select: {
+        accountName: true,
         accountNumber: true,
+        accountType: true,
         status: true,
         updatedAt: true,
-        createdAt: true,
       },
     });
   }
@@ -54,15 +58,9 @@ export class AccountRepository {
     return await this.prisma.account.findUnique({
       where: { accountNumber: accountNumber, userId: userId },
       select: {
-        accountId: false,
-        userId: false,
-        accountNumber: true,
-        accountType: false,
-        pinHash: false,
-        balance: false,
-        currency: false,
+        accountName: true,
+        accountType: true,
         status: true,
-        createdAt: true,
         updatedAt: true,
       },
     });
@@ -74,6 +72,7 @@ export class AccountRepository {
       select: {
         accountId: false,
         userId: false,
+        accountName: true,
         accountNumber: true,
         accountType: true,
         pinHash: false,
@@ -82,6 +81,7 @@ export class AccountRepository {
         status: true,
         createdAt: true,
         updatedAt: true,
+        closedAt: true,
       },
     });
   }
@@ -89,7 +89,54 @@ export class AccountRepository {
   async findByAccountNumber(accountNumber: string, userId: number) {
     return await this.prisma.account.findUnique({
       where: { accountNumber: accountNumber, userId: userId },
-      select: { pinHash: true },
+      select: {
+        accountId: true,
+        userId: true,
+        accountName: true,
+        accountNumber: true,
+        accountType: true,
+        pinHash: true,
+        pinFailedAttempts: true,
+        pinLockedUntil: true,
+        balance: true,
+        currency: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        closedAt: true,
+      },
     });
+  }
+
+  async findByAccountNumberPublic(accountNumber: string) {
+    return await this.prisma.account.findUnique({
+      where: { accountNumber: accountNumber },
+      // select: {
+      //   accountId: true,
+      //   userId: true,
+      //   accountName: true,
+      //   accountNumber: true,
+      //   accountType: true,
+      //   pinHash: true,
+      //   pinFailedAttempts: true,
+      //   pinLockedUntil: true,
+      //   balance: true,
+      //   currency: true,
+      //   status: true,
+      //   createdAt: true,
+      //   updatedAt: true,
+      //   closedAt: true,
+      // },
+    });
+  }
+
+  async hasActiveAccount(userId: number): Promise<boolean> {
+    return !!(await this.prisma.account.findFirst({
+      where: {
+        userId,
+        status: 'ACTIVE',
+      },
+      select: { accountId: true },
+    }));
   }
 }

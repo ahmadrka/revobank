@@ -7,9 +7,10 @@ import { MorganMiddleware } from './middleware/logger.middleware';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma/prisma.service';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, AccountsModule, PrismaModule],
+  imports: [AuthModule, UsersModule, AccountsModule, PrismaModule, TransactionsModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

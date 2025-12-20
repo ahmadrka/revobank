@@ -57,7 +57,6 @@ export class AccountsController {
     );
   }
 
-  @UseGuards(OwnershipGuard)
   @Patch(':accountNumber')
   update(
     @Param('accountNumber') accountNumber: string,
@@ -66,7 +65,6 @@ export class AccountsController {
     return this.accountsService.updateAccount(+accountNumber, updateAccountDto);
   }
 
-  @UseGuards(OwnershipGuard)
   @Post(':accountNumber/close')
   remove(
     @Param('accountNumber') accountNumber: string,
@@ -75,7 +73,6 @@ export class AccountsController {
     return this.accountsService.removeAccount(+accountNumber, +pin);
   }
 
-  @UseGuards(OwnershipGuard)
   @Delete(':accountNumber')
   delete(
     @Param('accountNumber') accountNumber: string,
