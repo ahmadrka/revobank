@@ -13,15 +13,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles, Role } from 'src/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
-import { OwnershipGuard } from 'src/auth/ownership.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // ONLY FOR TESTING
-  // @UseGuards(RolesGuard)
   @Roles(Role.ADMIN, Role.SUPERADMIN)
   @Get('getall')
   findAll() {
@@ -49,7 +46,6 @@ export class UsersController {
     return this.usersService.removeUser(+user.user.userId, password);
   }
 
-  @UseGuards(RolesGuard)
   @Roles(Role.SUPERADMIN)
   @Delete(':id')
   delete(@Param('id') id: string) {

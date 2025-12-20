@@ -7,7 +7,7 @@ export class OwnershipGuard implements CanActivate {
     const user = req.user;
     const paramId = Number(req.params.id);
 
-    if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') return true;
+    // if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') return true;
     return user.userId === paramId;
   }
 }
