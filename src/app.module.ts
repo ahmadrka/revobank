@@ -8,14 +8,22 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma/prisma.service';
 import { TransactionsModule } from './transactions/transactions.module';
+import { RateLimiterMiddleware } from './middleware/rate-limiter.middleware';
 
 @Module({
-  imports: [AuthModule, UsersModule, AccountsModule, PrismaModule, TransactionsModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    AccountsModule,
+    PrismaModule,
+    TransactionsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RateLimiterMiddleware).forRoutes('*');
     consumer.apply(MorganMiddleware).forRoutes('*');
   }
 }
