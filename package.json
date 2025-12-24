@@ -1,8 +1,8 @@
 {
   "name": "revobank",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Fictional Backend Banking Management App",
+  "author": "Ahmadrka",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -34,6 +34,9 @@
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "passport": "^0.7.0",
+    "passport-apple": "^2.0.2",
+    "passport-azure-ad": "^4.3.5",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
