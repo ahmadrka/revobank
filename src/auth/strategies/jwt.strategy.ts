@@ -1,4 +1,4 @@
-import { JwtPayload } from './../../node_modules/@types/jsonwebtoken/index.d';
+import { JwtPayload } from './../../../node_modules/@types/jsonwebtoken/index.d';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';

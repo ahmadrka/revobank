@@ -100,4 +100,18 @@ export class AuthService {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
   }
+
+  async loginOAuth(oauthUser: any) {
+    // 1. cek user di DB berdasarkan provider + providerId
+    // 2. jika belum ada → create
+    // 3. generate JWT
+
+    const payload = {
+      sub: oauthUser.providerId,
+      email: oauthUser.email,
+      provider: oauthUser.provider,
+    };
+
+    return this.jwtService.sign(payload);
+  }
 }

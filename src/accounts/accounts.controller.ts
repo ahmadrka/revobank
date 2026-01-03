@@ -18,11 +18,11 @@ import { Roles, Role } from 'src/decorator/roles.decorator';
 
 @Controller('accounts')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.USER)
+@Roles(Role.MEMBER)
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Post()
   create(
     @Body() createAccountDto: CreateAccountDto,
@@ -34,13 +34,13 @@ export class AccountsController {
     );
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Get()
   findManyAccounts(@Req() req: { user: { userId: number } }) {
     return this.accountsService.findAccounts(req.user.userId);
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Get(':accountNumber')
   findOneAccount(
     @Param('accountNumber') accountNumber: string,
@@ -49,7 +49,7 @@ export class AccountsController {
     return this.accountsService.findAccount(accountNumber, req.user.userId);
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Post(':accountNumber/detail')
   findOneDetail(
     @Param('accountNumber') accountNumber: string,
@@ -63,7 +63,7 @@ export class AccountsController {
     );
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Patch(':accountNumber')
   update(
     @Param('accountNumber') accountNumber: string,
@@ -72,7 +72,7 @@ export class AccountsController {
     return this.accountsService.updateAccount(+accountNumber, updateAccountDto);
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.MEMBER)
   @Post(':accountNumber/close')
   remove(
     @Param('accountNumber') accountNumber: string,
